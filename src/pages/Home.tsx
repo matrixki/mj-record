@@ -94,6 +94,14 @@ function Home() {
     <div className="container">
       <h1>麻將戰績 2025</h1>
 
+      {/* Description */}
+      <section className="description-section">
+        <p className="description-text">
+          歡迎來到麻將戰績排行榜！這裡記錄著所有玩家的年度戰績，包括總分排名、勝率統計、出席記錄以及本月最火熱的選手。
+          讓我們一起見證誰是真正的麻將王者！
+        </p>
+      </section>
+
       {/* Top 5 by Total Score */}
       <section className="leaderboard-section">
         <h2>🏆 年度總分前五名</h2>

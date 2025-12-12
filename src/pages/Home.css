@@ -35,6 +35,24 @@ h2 {
   color: #ffcccc;
 }
 
+/* Description Section */
+.description-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.description-text {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 400;
+}
+
 /* Leaderboard Section */
 .leaderboard-section {
   background: white;
@@ -310,6 +328,15 @@ h2 {
 
   h2 {
     font-size: 1.2rem;
+  }
+
+  .description-section {
+    padding: 1rem 1.5rem;
+  }
+
+  .description-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   .leaderboard-section {

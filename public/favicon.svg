@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Mahjong tile background -->
+  <rect x="15" y="5" width="70" height="90" rx="4" fill="#f5f5dc" stroke="#2c3e50" stroke-width="2"/>
+
+  <!-- Inner border -->
+  <rect x="18" y="8" width="64" height="84" rx="3" fill="none" stroke="#8b7355" stroke-width="1"/>
+
+  <!-- Red "中" character (Red Dragon tile) -->
+  <text x="50" y="53" font-family="serif" font-size="45" font-weight="bold" fill="#e74c3c" text-anchor="middle" dominant-baseline="middle">中</text>
+
+  <!-- Small decorative elements -->
+  <circle cx="50" cy="18" r="3" fill="#d4af37"/>
+  <circle cx="50" cy="88" r="3" fill="#d4af37"/>
+</svg>
