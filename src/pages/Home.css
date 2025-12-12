@@ -1,0 +1,384 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.error {
+  color: #ffcccc;
+}
+
+/* Leaderboard Section */
+.leaderboard-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.leaderboard-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid #3498db;
+}
+
+.leaderboard-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.leaderboard-card:nth-child(1) {
+  border-left-color: #f39c12;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+}
+
+.leaderboard-card:nth-child(2) {
+  border-left-color: #95a5a6;
+  background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+}
+
+.leaderboard-card:nth-child(3) {
+  border-left-color: #cd7f32;
+  background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+}
+
+.rank {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  min-width: 60px;
+  text-align: center;
+}
+
+.player-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.player-name {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.score {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.score.positive {
+  color: #27ae60;
+}
+
+.score.negative {
+  color: #e74c3c;
+}
+
+.win-rate {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3498db;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.wins {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.losses {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.games {
+  color: #7f8c8d;
+}
+
+/* Attendance Section */
+.attendance-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.attendance-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: white;
+}
+
+.attendance-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.attendance-card:nth-child(1) {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  color: #2c3e50;
+}
+
+.attendance-card:nth-child(2) {
+  background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+  color: #2c3e50;
+}
+
+.attendance-card:nth-child(3) {
+  background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+  color: white;
+}
+
+.attendance-rank {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: 60px;
+  text-align: center;
+}
+
+.attendance-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.attendance-name {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.attendance-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Hottest Player Section */
+.hottest-section {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: white;
+}
+
+.hottest-section h2 {
+  color: white;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.hottest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hottest-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hottest-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.hottest-card:nth-child(1) {
+  border: 3px solid rgba(255, 215, 0, 0.6);
+  background: rgba(255, 215, 0, 0.15);
+}
+
+.hottest-card:nth-child(2) {
+  border: 3px solid rgba(192, 192, 192, 0.6);
+  background: rgba(192, 192, 192, 0.15);
+}
+
+.hottest-card:nth-child(3) {
+  border: 3px solid rgba(205, 127, 50, 0.6);
+  background: rgba(205, 127, 50, 0.15);
+}
+
+.hottest-rank {
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.hottest-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hottest-score {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.hottest-score.positive {
+  color: #ffeaa7;
+}
+
+.hottest-score.negative {
+  color: #fab1a0;
+}
+
+.hottest-stats {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .leaderboard-section {
+    padding: 1.5rem;
+  }
+
+  .leaderboard-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .rank {
+    font-size: 1.5rem;
+    min-width: auto;
+  }
+
+  .player-name {
+    font-size: 1.1rem;
+  }
+
+  .score,
+  .win-rate {
+    font-size: 1.2rem;
+  }
+
+  .stats {
+    font-size: 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .attendance-section {
+    padding: 1.5rem;
+  }
+
+  .attendance-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .attendance-rank {
+    font-size: 1.5rem;
+    min-width: auto;
+  }
+
+  .attendance-name {
+    font-size: 1.1rem;
+  }
+
+  .attendance-count {
+    font-size: 1.2rem;
+  }
+
+  .hottest-rank {
+    font-size: 1.2rem;
+    top: 0.75rem;
+    left: 1rem;
+  }
+
+  .hottest-name {
+    font-size: 1.5rem;
+  }
+
+  .hottest-score {
+    font-size: 2rem;
+  }
+
+  .hottest-stats {
+    font-size: 0.9rem;
+  }
+}
