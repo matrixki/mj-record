@@ -79,3 +79,6 @@ mj-record/
 - Integrate with Google Sheets API to fetch player records
 - Design and implement the UI for displaying records
 - Add additional pages/routes as needed
+
+---
+Built with React, TypeScript, and Vite
