@@ -1,7 +1,7 @@
 import { SheetData, PlayerRecord } from '../types/PlayerRecord';
 
 const SHEET_ID = '1-aLG1gcyNOYVY-vBKaO1QdBae3RA43ltCnyOKLWcc2o';
-const GID = '909898838'; // 2025 sheet gid
+const GID = '825955046'; // 2026 sheet gid
 
 export async function fetchSheetData(): Promise<SheetData> {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;

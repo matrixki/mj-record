@@ -92,7 +92,7 @@ function Home() {
 
   return (
     <div className="container">
-      <h1>麻將戰績 2025</h1>
+      <h1>麻將戰績 2026</h1>
 
       {/* Description */}
       <section className="description-section">
