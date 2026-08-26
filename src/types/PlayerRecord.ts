@@ -12,7 +12,18 @@ export interface GameScore {
   score: number;
 }
 
+export interface LatestGameResult {
+  name: string;
+  score: number;
+}
+
+export interface LatestGame {
+  date: string;
+  results: LatestGameResult[];
+}
+
 export interface SheetData {
   players: PlayerRecord[];
   dates: string[];
+  latestGame: LatestGame | null;
 }

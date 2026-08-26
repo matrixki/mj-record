@@ -32,18 +32,20 @@ export async function fetchSheetData(): Promise<SheetData> {
       return values;
     });
 
-    // Row 1 (index 0): Number of games
-    // Row 2 (index 1): Total scores
-    // Row 3 (index 2): Wins
-    // Row 4 (index 3): Losses
-    // Row 5 (index 4): Player names
-    // Row 6+ (index 5+): Game data
+    // Row 1 (index 0): Historical high score
+    // Row 2 (index 1): Historical worst score
+    // Row 3 (index 2): Number of games
+    // Row 4 (index 3): Total scores
+    // Row 5 (index 4): Wins
+    // Row 6 (index 5): Losses
+    // Row 7 (index 6): Player names
+    // Row 8+ (index 7+): Game data
 
-    const playerNames = lines[4]; // Row 5 has player names
-    const gamesCountRow = lines[0]; // Row 1 has number of games
-    const totalScores = lines[1]; // Row 2 has total scores
-    const winsRow = lines[2]; // Row 3 has wins
-    const lossesRow = lines[3]; // Row 4 has losses
+    const playerNames = lines[6]; // Row 7 has player names
+    const gamesCountRow = lines[2]; // Row 3 has number of games
+    const totalScores = lines[3]; // Row 4 has total scores
+    const winsRow = lines[4]; // Row 5 has wins
+    const lossesRow = lines[5]; // Row 6 has losses
 
     const players: PlayerRecord[] = [];
     const dates: string[] = [];
@@ -58,10 +60,10 @@ export async function fetchSheetData(): Promise<SheetData> {
       const wins = winsRow[colIndex] ? Number(winsRow[colIndex]) : 0;
       const losses = lossesRow[colIndex] ? Number(lossesRow[colIndex]) : 0;
 
-      // Extract game scores from row 6 onwards (index 5+)
+      // Extract game scores from row 8 onwards (index 7+)
       const games = [];
 
-      for (let rowIndex = 5; rowIndex < lines.length; rowIndex++) {
+      for (let rowIndex = 7; rowIndex < lines.length; rowIndex++) {
         const row = lines[rowIndex];
         if (row.length === 0 || !row[1]) continue;
 
@@ -91,7 +93,35 @@ export async function fetchSheetData(): Promise<SheetData> {
       });
     }
 
-    return { players, dates };
+    // Find the most recent game session (last data row with scores)
+    let latestGame = null;
+    for (let rowIndex = lines.length - 1; rowIndex >= 7; rowIndex--) {
+      const row = lines[rowIndex];
+      if (!row || row.length === 0 || !row[1]) continue;
+
+      const date = row[1];
+      const results = [];
+
+      for (let colIndex = 2; colIndex < playerNames.length; colIndex++) {
+        const name = playerNames[colIndex];
+        if (!name) continue;
+
+        const scoreStr = row[colIndex];
+        if (scoreStr) {
+          const score = Number(scoreStr);
+          if (!isNaN(score) && score !== 0) {
+            results.push({ name, score });
+          }
+        }
+      }
+
+      if (results.length > 0) {
+        latestGame = { date, results };
+        break;
+      }
+    }
+
+    return { players, dates, latestGame };
   } catch (error) {
     console.error('Error fetching sheet data:', error);
     throw error;
