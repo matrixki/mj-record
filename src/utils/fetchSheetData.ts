@@ -1,4 +1,4 @@
-import { SheetData, PlayerRecord } from '../types/PlayerRecord';
+import { SheetData, PlayerRecord, GameSession } from '../types/PlayerRecord';
 
 const SHEET_ID = '1-aLG1gcyNOYVY-vBKaO1QdBae3RA43ltCnyOKLWcc2o';
 const GID = '825955046'; // 2026 sheet gid
@@ -47,61 +47,21 @@ export async function fetchSheetData(): Promise<SheetData> {
     const winsRow = lines[4]; // Row 5 has wins
     const lossesRow = lines[5]; // Row 6 has losses
 
-    const players: PlayerRecord[] = [];
     const dates: string[] = [];
+    const sessions: GameSession[] = [];
 
-    // Extract player data (skip first 2 columns: Row sum and 日期)
-    for (let colIndex = 2; colIndex < playerNames.length; colIndex++) {
-      const name = playerNames[colIndex];
-      if (!name) continue;
-
-      const gamesCount = gamesCountRow[colIndex] ? Number(gamesCountRow[colIndex]) : 0;
-      const totalScore = totalScores[colIndex] ? Number(totalScores[colIndex]) : 0;
-      const wins = winsRow[colIndex] ? Number(winsRow[colIndex]) : 0;
-      const losses = lossesRow[colIndex] ? Number(lossesRow[colIndex]) : 0;
-
-      // Extract game scores from row 8 onwards (index 7+)
-      const games = [];
-
-      for (let rowIndex = 7; rowIndex < lines.length; rowIndex++) {
-        const row = lines[rowIndex];
-        if (row.length === 0 || !row[1]) continue;
-
-        const date = row[1]; // Date is in column B (index 1)
-        const scoreStr = row[colIndex];
-
-        if (date && scoreStr) {
-          const score = Number(scoreStr);
-          if (!isNaN(score) && score !== 0) {
-            games.push({ date, score });
-          }
-
-          // Collect unique dates
-          if (colIndex === 2 && !dates.includes(date)) {
-            dates.push(date);
-          }
-        }
-      }
-
-      players.push({
-        name,
-        gamesCount,
-        totalScore,
-        wins,
-        losses,
-        games
-      });
-    }
-
-    // Find the most recent game session (last data row with scores)
-    let latestGame = null;
-    for (let rowIndex = lines.length - 1; rowIndex >= 7; rowIndex--) {
+    // Build one session per data row (row 8 onwards / index 7+), each
+    // holding every player's score for that game
+    for (let rowIndex = 7; rowIndex < lines.length; rowIndex++) {
       const row = lines[rowIndex];
       if (!row || row.length === 0 || !row[1]) continue;
 
-      const date = row[1];
-      const results = [];
+      const date = row[1]; // Date is in column B (index 1)
+      if (!dates.includes(date)) {
+        dates.push(date);
+      }
 
+      const results = [];
       for (let colIndex = 2; colIndex < playerNames.length; colIndex++) {
         const name = playerNames[colIndex];
         if (!name) continue;
@@ -116,12 +76,43 @@ export async function fetchSheetData(): Promise<SheetData> {
       }
 
       if (results.length > 0) {
-        latestGame = { date, results };
-        break;
+        sessions.push({ date, results });
       }
     }
 
-    return { players, dates, latestGame };
+    // Extract player data (skip first 2 columns: Row sum and 日期)
+    const players: PlayerRecord[] = [];
+    for (let colIndex = 2; colIndex < playerNames.length; colIndex++) {
+      const name = playerNames[colIndex];
+      if (!name) continue;
+
+      const gamesCount = gamesCountRow[colIndex] ? Number(gamesCountRow[colIndex]) : 0;
+      const totalScore = totalScores[colIndex] ? Number(totalScores[colIndex]) : 0;
+      const wins = winsRow[colIndex] ? Number(winsRow[colIndex]) : 0;
+      const losses = lossesRow[colIndex] ? Number(lossesRow[colIndex]) : 0;
+
+      const games = sessions
+        .map(session => ({
+          date: session.date,
+          result: session.results.find(r => r.name === name)
+        }))
+        .filter((entry): entry is { date: string; result: { name: string; score: number } } => !!entry.result)
+        .map(entry => ({ date: entry.date, score: entry.result.score }));
+
+      players.push({
+        name,
+        gamesCount,
+        totalScore,
+        wins,
+        losses,
+        games
+      });
+    }
+
+    // The most recent game session (last data row with scores)
+    const latestGame = sessions.length > 0 ? sessions[sessions.length - 1] : null;
+
+    return { players, dates, latestGame, sessions };
   } catch (error) {
     console.error('Error fetching sheet data:', error);
     throw error;

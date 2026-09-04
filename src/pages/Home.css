@@ -619,6 +619,86 @@ h2 {
   opacity: 0.9;
 }
 
+/* Nemesis Section */
+.nemesis-section {
+  background: linear-gradient(135deg, #200122 0%, #6f0000 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+.nemesis-section h2 {
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.nemesis-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nemesis-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nemesis-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.nemesis-rank {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 45px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.nemesis-matchup {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.nemesis-player {
+  font-weight: 700;
+}
+
+.nemesis-vs {
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.nemesis-name {
+  font-weight: 700;
+  color: #ff6b6b;
+  font-size: 1.3rem;
+}
+
+.nemesis-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -753,5 +833,33 @@ h2 {
 
   .worst-form-stats {
     font-size: 0.9rem;
+  }
+
+  .nemesis-section {
+    padding: 1.5rem;
+  }
+
+  .nemesis-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .nemesis-rank {
+    font-size: 1.2rem;
+    min-width: auto;
+  }
+
+  .nemesis-matchup {
+    font-size: 1rem;
+  }
+
+  .nemesis-name {
+    font-size: 1.1rem;
+  }
+
+  .nemesis-stats {
+    align-items: flex-start;
+    font-size: 0.85rem;
   }
 }

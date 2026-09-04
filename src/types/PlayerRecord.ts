@@ -22,8 +22,14 @@ export interface LatestGame {
   results: LatestGameResult[];
 }
 
+export interface GameSession {
+  date: string;
+  results: LatestGameResult[];
+}
+
 export interface SheetData {
   players: PlayerRecord[];
   dates: string[];
   latestGame: LatestGame | null;
+  sessions: GameSession[];
 }

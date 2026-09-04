@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { fetchSheetData } from '../utils/fetchSheetData';
-import { PlayerRecord, LatestGame } from '../types/PlayerRecord';
+import { computeNemeses } from '../utils/nemesis';
+import { PlayerRecord, LatestGame, GameSession } from '../types/PlayerRecord';
 import './Home.css';
 
 function Home() {
   const [players, setPlayers] = useState<PlayerRecord[]>([]);
   const [latestGame, setLatestGame] = useState<LatestGame | null>(null);
+  const [sessions, setSessions] = useState<GameSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,6 +17,7 @@ function Home() {
         const data = await fetchSheetData();
         setPlayers(data.players);
         setLatestGame(data.latestGame);
+        setSessions(data.sessions);
         setLoading(false);
       } catch (err) {
         setError('Failed to load player data');
@@ -115,6 +118,10 @@ function Home() {
   const latestGameResults = latestGame
     ? [...latestGame.results].sort((a, b) => b.score - a.score)
     : [];
+
+  // Who is each player's nemesis: the opponent whose presence correlates
+  // with the player's worst average score this year
+  const nemesisRecords = computeNemeses(players, sessions);
 
   return (
     <div className="container">
@@ -271,6 +278,37 @@ function Home() {
                   {player.recentScore > 0 ? '+' : ''}{player.recentScore}
                 </div>
                 <div className="recent-form-stats">近 8 場比賽</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Nemesis: the opponent each player performs worst against */}
+      {nemesisRecords.length > 0 && (
+        <section className="nemesis-section">
+          <h2>
+            😈 誰是剋星？
+            <span className="info-icon" title="統計每位玩家的年度戰績，找出他/她出賽時對戰最多、且該對手在場時平均分數最低的玩家。需累積滿 3 場交手紀錄才列入排名">ⓘ</span>
+          </h2>
+          <div className="nemesis-list">
+            {nemesisRecords.map((record, index) => (
+              <div key={index} className="nemesis-card">
+                <div className="nemesis-rank">#{index + 1}</div>
+                <div className="nemesis-matchup">
+                  <span className="nemesis-player">{record.player}</span>
+                  <span className="nemesis-vs">的剋星是</span>
+                  <span className="nemesis-name">{record.nemesis}</span>
+                </div>
+                <div className="nemesis-stats">
+                  <span className="nemesis-avg-with">
+                    對戰均分 {record.avgScoreWithNemesis > 0 ? '+' : ''}{record.avgScoreWithNemesis.toFixed(1)}
+                  </span>
+                  <span className="nemesis-avg-overall">
+                    整體均分 {record.avgScoreOverall > 0 ? '+' : ''}{record.avgScoreOverall.toFixed(1)}
+                  </span>
+                  <span className="nemesis-games">交手 {record.gamesTogether} 場</span>
+                </div>
               </div>
             ))}
           </div>
