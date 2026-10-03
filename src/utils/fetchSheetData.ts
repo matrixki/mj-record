@@ -40,8 +40,14 @@ export async function fetchSheetData(): Promise<SheetData> {
     // Row 6 (index 5): Losses
     // Row 7 (index 6): Player names
     // Row 8+ (index 7+): Game data
+    //
+    // Columns: Row sum, 場地 (venue), 日期 (date), then one column per player.
+    // Locate them by header so a column being added/moved doesn't break parsing.
 
     const playerNames = lines[6]; // Row 7 has player names
+    const venueCol = playerNames.indexOf('場地'); // -1 if the sheet has no venue column
+    const dateCol = playerNames.indexOf('日期') >= 0 ? playerNames.indexOf('日期') : 1;
+    const firstPlayerCol = Math.max(venueCol, dateCol) + 1;
     const gamesCountRow = lines[2]; // Row 3 has number of games
     const totalScores = lines[3]; // Row 4 has total scores
     const winsRow = lines[4]; // Row 5 has wins
@@ -54,15 +60,16 @@ export async function fetchSheetData(): Promise<SheetData> {
     // holding every player's score for that game
     for (let rowIndex = 7; rowIndex < lines.length; rowIndex++) {
       const row = lines[rowIndex];
-      if (!row || row.length === 0 || !row[1]) continue;
+      if (!row || row.length === 0 || !row[dateCol]) continue;
 
-      const date = row[1]; // Date is in column B (index 1)
+      const date = row[dateCol];
+      const venue = venueCol >= 0 ? row[venueCol] : '';
       if (!dates.includes(date)) {
         dates.push(date);
       }
 
       const results = [];
-      for (let colIndex = 2; colIndex < playerNames.length; colIndex++) {
+      for (let colIndex = firstPlayerCol; colIndex < playerNames.length; colIndex++) {
         const name = playerNames[colIndex];
         if (!name) continue;
 
@@ -76,13 +83,13 @@ export async function fetchSheetData(): Promise<SheetData> {
       }
 
       if (results.length > 0) {
-        sessions.push({ date, results });
+        sessions.push({ date, venue, results });
       }
     }
 
-    // Extract player data (skip first 2 columns: Row sum and 日期)
+    // Extract player data (skip the leading Row sum / 場地 / 日期 columns)
     const players: PlayerRecord[] = [];
-    for (let colIndex = 2; colIndex < playerNames.length; colIndex++) {
+    for (let colIndex = firstPlayerCol; colIndex < playerNames.length; colIndex++) {
       const name = playerNames[colIndex];
       if (!name) continue;
 
@@ -94,10 +101,11 @@ export async function fetchSheetData(): Promise<SheetData> {
       const games = sessions
         .map(session => ({
           date: session.date,
+          venue: session.venue,
           result: session.results.find(r => r.name === name)
         }))
-        .filter((entry): entry is { date: string; result: { name: string; score: number } } => !!entry.result)
-        .map(entry => ({ date: entry.date, score: entry.result.score }));
+        .filter((entry): entry is { date: string; venue: string; result: { name: string; score: number } } => !!entry.result)
+        .map(entry => ({ date: entry.date, venue: entry.venue, score: entry.result.score }));
 
       players.push({
         name,

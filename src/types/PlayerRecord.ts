@@ -9,6 +9,7 @@ export interface PlayerRecord {
 
 export interface GameScore {
   date: string;
+  venue: string;
   score: number;
 }
 
@@ -19,11 +20,13 @@ export interface LatestGameResult {
 
 export interface LatestGame {
   date: string;
+  venue: string;
   results: LatestGameResult[];
 }
 
 export interface GameSession {
   date: string;
+  venue: string; // empty when the sheet has no venue for that game
   results: LatestGameResult[];
 }
 
