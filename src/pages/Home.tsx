@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchSheetData } from '../utils/fetchSheetData';
 import { computeNemeses } from '../utils/nemesis';
+import { computeBestByWeekday } from '../utils/weekday';
 import { PlayerRecord, LatestGame, GameSession } from '../types/PlayerRecord';
 import './Home.css';
 
@@ -122,6 +123,9 @@ function Home() {
   // Who is each player's nemesis: the opponent whose presence correlates
   // with the player's worst average score this year
   const nemesisRecords = computeNemeses(players, sessions);
+
+  // Best player (highest total score) on each day of the week
+  const weekdayBest = computeBestByWeekday(sessions);
 
   return (
     <div className="container">
@@ -314,6 +318,31 @@ function Home() {
           </div>
         </section>
       )}
+
+      {/* Best player for each day of the week */}
+      <section className="weekday-section">
+        <h2>
+          📅 每週最旺
+          <span className="info-icon" title="依日期換算星期，統計每個星期幾總分最高的玩家">ⓘ</span>
+        </h2>
+        <div className="weekday-list">
+          {weekdayBest.map(day => (
+            <div key={day.label} className="weekday-card">
+              <div className="weekday-text">
+                {day.label}最旺：<span className="weekday-player">{day.player ?? '—'}</span>
+              </div>
+              {day.player && (
+                <div className="weekday-stats">
+                  <span className={`weekday-score ${day.totalScore >= 0 ? 'positive' : 'negative'}`}>
+                    {day.totalScore > 0 ? '+' : ''}{day.totalScore}
+                  </span>
+                  <span className="weekday-games">{day.games} 場</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

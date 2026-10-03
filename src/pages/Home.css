@@ -699,6 +699,75 @@ h2 {
   white-space: nowrap;
 }
 
+/* Weekday Section */
+.weekday-section {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.weekday-section h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.weekday-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.weekday-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.weekday-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.weekday-player {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.weekday-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.weekday-score {
+  font-weight: 700;
+}
+
+.weekday-score.positive {
+  color: #1e8449;
+}
+
+.weekday-score.negative {
+  color: #c0392b;
+}
+
+.weekday-games {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #636e72;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -861,5 +930,18 @@ h2 {
   .nemesis-stats {
     align-items: flex-start;
     font-size: 0.85rem;
+  }
+
+  .weekday-section {
+    padding: 1.5rem;
+  }
+
+  .weekday-card {
+    font-size: 1rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .weekday-player {
+    font-size: 1.1rem;
   }
 }
