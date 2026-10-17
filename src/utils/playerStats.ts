@@ -48,7 +48,6 @@ export interface PlayerStats {
   recent: TrendPoint[];
   monthly: BucketStat[];
   weekday: BucketStat[];
-  venues: BucketStat[];
   opponents: OpponentStat[]; // only opponents with enough shared games, worst first
   nemesis: OpponentStat | null;
   victim: OpponentStat | null;
@@ -66,7 +65,6 @@ export function computePlayerStats(name: string, sessions: GameSession[]): Playe
   const trend: TrendPoint[] = [];
   const monthly: BucketStat[] = Array.from({ length: 12 }, (_, i) => ({ label: `${i + 1}月`, score: 0, games: 0 }));
   const weekday: BucketStat[] = WEEKDAYS.map(({ label }) => ({ label, score: 0, games: 0 }));
-  const venueTotals = new Map<string, BucketStat>();
   const scoresWith = new Map<string, number[]>();
   let total = 0;
 
@@ -88,13 +86,6 @@ export function computePlayerStats(name: string, sessions: GameSession[]): Playe
     if (weekdayIndex >= 0) {
       weekday[weekdayIndex].score += mine.score;
       weekday[weekdayIndex].games += 1;
-    }
-
-    if (session.venue) {
-      const venue = venueTotals.get(session.venue) ?? { label: session.venue, score: 0, games: 0 };
-      venue.score += mine.score;
-      venue.games += 1;
-      venueTotals.set(session.venue, venue);
     }
 
     for (const other of session.results) {
@@ -150,7 +141,6 @@ export function computePlayerStats(name: string, sessions: GameSession[]): Playe
     recent: trend.slice(-RECENT_GAMES),
     monthly,
     weekday,
-    venues: [...venueTotals.values()].sort((a, b) => b.games - a.games),
     opponents,
     nemesis,
     victim,

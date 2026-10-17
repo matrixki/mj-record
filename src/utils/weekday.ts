@@ -28,6 +28,20 @@ export function weekdayOf(date: string): number | null {
   return new Date(SHEET_YEAR, month - 1, day).getDay();
 }
 
+// Days since January 1 of the sheet's year (0 = Jan 1), or null for an unparseable date
+export function dayOfYear(date: string): number | null {
+  const [month, day] = date.split('/').map(Number);
+  if (!month || !day) return null;
+  return Math.round((Date.UTC(SHEET_YEAR, month - 1, day) - Date.UTC(SHEET_YEAR, 0, 1)) / 86400000);
+}
+
+// Days from Jan 1 up to today, clamped to the sheet's year (e.g. after the year ends, the full year)
+export function daysIntoYear(now: Date = new Date()): number {
+  if (now.getFullYear() > SHEET_YEAR) return dayOfYear('12/31') ?? 364;
+  if (now.getFullYear() < SHEET_YEAR) return 0;
+  return dayOfYear(`${now.getMonth() + 1}/${now.getDate()}`) ?? 0;
+}
+
 // For each weekday, the player with the highest total score on that weekday
 export function computeBestByWeekday(sessions: GameSession[]): WeekdayBest[] {
   const totals: Record<number, Record<string, { score: number; games: number }>> = {};

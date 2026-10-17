@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSheetData } from '../context/SheetDataContext';
 import { computePlayerStats, MIN_GAMES_FOR_ANALYSIS, RECENT_GAMES } from '../utils/playerStats';
 import { MIN_GAMES_TOGETHER } from '../utils/nemesis';
+import { daysIntoYear } from '../utils/weekday';
 import TrendChart from '../components/TrendChart';
 import RecentBars from '../components/RecentBars';
 import ScoreBars from '../components/ScoreBars';
@@ -148,9 +149,9 @@ function Player() {
           <section className="player-section">
             <h2>
               📈 累積分數走勢
-              <span className="info-icon" title="X 軸為出賽場次（同一天多場會分開計），Y 軸為累積總分。滑過或點選圖表可查看每一場">ⓘ</span>
+              <span className="info-icon" title="X 軸為時間（從 1 月 1 日到今天），Y 軸為累積總分。同一天多場會合併成一個點。滑過或點選圖表可查看每一天">ⓘ</span>
             </h2>
-            <TrendChart points={stats.trend} />
+            <TrendChart points={stats.trend} endDay={daysIntoYear()} />
           </section>
 
           {/* Recent form */}
@@ -187,7 +188,7 @@ function Player() {
             </div>
           </section>
 
-          {/* Month / weekday / venue breakdowns */}
+          {/* Month / weekday breakdowns */}
           <section className="player-section">
             <h2>🗓️ 每月表現</h2>
             <ScoreBars rows={activeMonths} />
@@ -197,13 +198,6 @@ function Player() {
             <h2>📅 星期表現</h2>
             <ScoreBars rows={stats.weekday} />
           </section>
-
-          {stats.venues.length > 0 && (
-            <section className="player-section">
-              <h2>📍 場地表現</h2>
-              <ScoreBars rows={stats.venues} />
-            </section>
-          )}
 
           {/* Opponents */}
           {!stats.insufficient && (
