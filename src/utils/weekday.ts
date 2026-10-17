@@ -4,7 +4,7 @@ import { GameSession } from '../types/PlayerRecord';
 const SHEET_YEAR = 2026;
 
 // Display order: Monday first, Sunday last (Date.getDay(): 0 = Sunday)
-const WEEKDAYS = [
+export const WEEKDAYS = [
   { day: 1, label: '週一' },
   { day: 2, label: '週二' },
   { day: 3, label: '週三' },
@@ -22,7 +22,7 @@ export interface WeekdayBest {
   games: number;
 }
 
-function weekdayOf(date: string): number | null {
+export function weekdayOf(date: string): number | null {
   const [month, day] = date.split('/').map(Number);
   if (!month || !day) return null;
   return new Date(SHEET_YEAR, month - 1, day).getDay();

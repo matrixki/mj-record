@@ -13,7 +13,7 @@ export interface NemesisRecord {
 const MIN_TOTAL_GAMES = 3;
 // An opponent needs to have shared at least this many games for the
 // comparison to be statistically meaningful
-const MIN_GAMES_TOGETHER = 3;
+export const MIN_GAMES_TOGETHER = 3;
 
 function average(scores: number[]): number {
   return scores.reduce((sum, score) => sum + score, 0) / scores.length;

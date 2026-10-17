@@ -1,33 +1,15 @@
-import { useEffect, useState } from 'react';
-import { fetchSheetData } from '../utils/fetchSheetData';
+import { useSheetData } from '../context/SheetDataContext';
 import { computeNemeses } from '../utils/nemesis';
 import { computeBestByWeekday } from '../utils/weekday';
-import { PlayerRecord, LatestGame, GameSession } from '../types/PlayerRecord';
+import { Link } from 'react-router-dom';
+import { MIN_GAMES_FOR_ANALYSIS } from '../utils/playerStats';
 import './Home.css';
 
 function Home() {
-  const [players, setPlayers] = useState<PlayerRecord[]>([]);
-  const [latestGame, setLatestGame] = useState<LatestGame | null>(null);
-  const [sessions, setSessions] = useState<GameSession[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await fetchSheetData();
-        setPlayers(data.players);
-        setLatestGame(data.latestGame);
-        setSessions(data.sessions);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load player data');
-        setLoading(false);
-        console.error(err);
-      }
-    }
-    loadData();
-  }, []);
+  const { data, loading, error } = useSheetData();
+  const players = data?.players ?? [];
+  const latestGame = data?.latestGame ?? null;
+  const sessions = data?.sessions ?? [];
 
   if (loading) {
     return (
@@ -37,10 +19,10 @@ function Home() {
     );
   }
 
-  if (error) {
+  if (error || !data) {
     return (
       <div className="container">
-        <div className="error">{error}</div>
+        <div className="error">{error ?? 'Failed to load player data'}</div>
       </div>
     );
   }
@@ -123,6 +105,11 @@ function Home() {
   // Who is each player's nemesis: the opponent whose presence correlates
   // with the player's worst average score this year
   const nemesisRecords = computeNemeses(players, sessions);
+
+  // Everyone who has played this year, most active first
+  const analysisPlayers = players
+    .filter(player => player.gamesCount > 0)
+    .sort((a, b) => b.gamesCount - a.gamesCount);
 
   // Best player (highest total score) on each day of the week
   const weekdayBest = computeBestByWeekday(sessions);
@@ -329,7 +316,8 @@ function Home() {
           {weekdayBest.map(day => (
             <div key={day.label} className="weekday-card">
               <div className="weekday-text">
-                {day.label}最旺：<span className="weekday-player">{day.player ?? '—'}</span>
+                <span className="weekday-label">{day.label}最旺：</span>
+                <span className="weekday-player">{day.player ?? '—'}</span>
               </div>
               {day.player && (
                 <div className="weekday-stats">
@@ -340,6 +328,28 @@ function Home() {
                 </div>
               )}
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Player analysis: entry point to each player's page */}
+      <section className="analysis-section">
+        <h2>
+          🔍 玩家分析
+          <span className="info-icon" title="點選玩家，查看他今年的走勢、近況與對手分析">ⓘ</span>
+        </h2>
+        <div className="analysis-list">
+          {analysisPlayers.map(player => (
+            <Link key={player.name} to={`/player/${encodeURIComponent(player.name)}`} className="analysis-card">
+              <div className="analysis-name">{player.name}</div>
+              <div className="analysis-meta">
+                {player.gamesCount} 場
+                {player.gamesCount < MIN_GAMES_FOR_ANALYSIS && <span className="analysis-tag">資料不足</span>}
+              </div>
+              <div className={`analysis-score ${player.totalScore >= 0 ? 'positive' : 'negative'}`}>
+                {player.totalScore > 0 ? '+' : ''}{player.totalScore}
+              </div>
+            </Link>
           ))}
         </div>
       </section>

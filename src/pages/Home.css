@@ -738,6 +738,17 @@ h2 {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
+.weekday-text {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.25rem;
+}
+
+.weekday-label,
+.weekday-player {
+  white-space: nowrap;
+}
+
 .weekday-player {
   font-weight: 700;
   font-size: 1.3rem;
@@ -766,6 +777,74 @@ h2 {
   font-size: 0.9rem;
   font-weight: 400;
   color: #636e72;
+}
+
+/* Player Analysis Section */
+.analysis-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.analysis-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.analysis-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.analysis-name {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.analysis-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #636e72;
+}
+
+.analysis-tag {
+  background: #fff3cd;
+  color: #7a5b00;
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+}
+
+.analysis-score {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.analysis-score.positive {
+  color: #27ae60;
+}
+
+.analysis-score.negative {
+  color: #e74c3c;
 }
 
 @media (max-width: 768px) {
@@ -943,5 +1022,13 @@ h2 {
 
   .weekday-player {
     font-size: 1.1rem;
+  }
+
+  .analysis-section {
+    padding: 1.5rem;
+  }
+
+  .analysis-list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
